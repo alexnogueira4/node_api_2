@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  node_api_2:
+    container_name: NODE_API_2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/node-app
+      - ./node_modules:/node-app/node_modules
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGODB_CONNECTION: mongodb://db:27017/test
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - '3000:3000'
+
+  db:
+    image: 'mongo'
+    container_name: MONGO_NODE_API_2
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data/db:/data/db
